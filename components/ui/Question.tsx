@@ -29,11 +29,12 @@ const Question = ({
   setSelectedOptions,
 }: props) => {
   const onChange = (val: string) => {
+    const rightOne = (element: selectedOption) =>
+      element.question_number === questionNumber;
     setSelectedOptions((prev) => {
-      const index = prev.findIndex((item) => {
-        item.question_number === questionNumber;
-      });
+      const index = prev.findIndex(rightOne);
       prev[index] = { question_number: questionNumber, option: val };
+
       return prev;
     });
   };

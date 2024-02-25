@@ -6,6 +6,15 @@ import Link from "next/link";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Header from "@/components/header ";
 
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+  DialogHeader,
+} from "../components/ui/dialog";
+
 export default function Home() {
   const user = useUser();
   return (
@@ -35,9 +44,25 @@ export default function Home() {
             </>
           ) : (
             <>
-              <Button variant={"secondary"} className="w-max">
+              {/* <Button variant={"secondary"} className="w-max">
                 Options
-              </Button>
+              </Button> */}
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="w-max" variant="secondary">
+                    Options
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Are you absolutely sure?</DialogTitle>
+                    <DialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      your account and remove your data from our servers.
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
               <Button asChild variant={"default"} size={"lg"} className="w-max">
                 <Link href="/trivia">Start</Link>
               </Button>
