@@ -1,13 +1,6 @@
 import React from "react";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./select";
+import { Select, SelectTrigger, SelectValue } from "./select";
 
 interface selectedOption {
   question_number?: number;

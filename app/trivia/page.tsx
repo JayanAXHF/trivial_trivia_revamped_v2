@@ -52,7 +52,7 @@ const Trivia = () => {
     setQuestions(refData);
   };
 
-  const tempCheck = () => {
+  const submitAnswer = () => {
     for (let index = 0; index < questions.length; index++) {
       if (selectedOptions[index].option === questions[index].correctAnswer) {
         setScore((prevState) => {
@@ -91,7 +91,7 @@ const Trivia = () => {
                   />
                 );
               })}
-            <Button className="mx-10 my-5" onClick={tempCheck}>
+            <Button className="mx-10 my-5" onClick={submitAnswer}>
               Check
             </Button>
           </>
