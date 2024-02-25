@@ -39,7 +39,7 @@ export default function Home() {
                 Options
               </Button>
               <Button asChild variant={"default"} size={"lg"} className="w-max">
-                <Link href="/app/trivia">Start</Link>
+                <Link href="/trivia">Start</Link>
               </Button>
               <Button variant={"ghost"} className="w-max">
                 Stats

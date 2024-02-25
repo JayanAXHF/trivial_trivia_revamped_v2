@@ -10,14 +10,15 @@ import {
 } from "./select";
 
 interface selectedOption {
-  question_number: number;
-  option: string;
+  question_number?: number;
+  option?: string;
 }
 interface props {
   question: string;
   correct_answer: string;
   answers: string[];
   questionNumber: number;
+  setSelectedOptions: React.Dispatch<React.SetStateAction<selectedOption[]>>;
 }
 
 const Question = ({
@@ -25,13 +26,24 @@ const Question = ({
   correct_answer,
   answers,
   questionNumber,
+  setSelectedOptions,
 }: props) => {
+  const onChange = (val: string) => {
+    setSelectedOptions((prev) => {
+      const index = prev.findIndex((item) => {
+        item.question_number === questionNumber;
+      });
+      prev[index] = { question_number: questionNumber, option: val };
+      return prev;
+    });
+  };
+
   return (
-    <div className="p-20">
-      <h5 className="mb-5 font-bold">
+    <div className="p-10">
+      <h5 className="font-bold p-2">
         Q{questionNumber}. {question}
       </h5>
-      <Select>
+      <Select onValueChange={onChange}>
         <SelectTrigger className="w-full px-10">
           <SelectValue placeholder="Select an answer" />
         </SelectTrigger>
