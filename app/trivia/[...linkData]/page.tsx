@@ -83,7 +83,12 @@ const Trivia = ({ params }: { params: { linkData: any[] } }) => {
 
   const submitAnswer = async () => {
     const timestamp = Date.now();
-
+    let tempScore: number = 0;
+    for (let index = 0; index < questions.length; index++) {
+      if (selectedOptions[index].option === questions[index].correctAnswer) {
+        tempScore += 1;
+      }
+    }
     for (let index = 0; index < questions.length; index++) {
       if (selectedOptions[index].option === questions[index].correctAnswer) {
         setScore((prevState) => {
@@ -99,14 +104,15 @@ const Trivia = ({ params }: { params: { linkData: any[] } }) => {
       }
     }
     setIsChecking(true);
-    console.debug(user.user?.sid);
+    console.debug(score);
     await set(
       ref(db, "userData/" + user.user?.sid + "/" + timestamp.toString()),
       {
-        score: score,
+        score: tempScore,
         record: record,
         category: params.linkData[0],
         difficulty: params.linkData[1],
+        num_questions: params.linkData[2],
       }
     );
   };
@@ -117,7 +123,7 @@ const Trivia = ({ params }: { params: { linkData: any[] } }) => {
 
   return (
     <div className="h-screen w-screen lg:p-36 md:p-16 sm:p-6 ">
-      <ScrollArea className="w-full h-full bg-[#0a0a0a] lg:p-20 md:p-16 break-all p-6 rounded-3xl grid grid-flow-row gap-y-20 sm:gap-y-2 py-10">
+      <ScrollArea className="w-full h-full dark:bg-[#0a0a0a] bg-[#fafafa] lg:p-20 md:p-16 break-all p-6 rounded-3xl grid grid-flow-row gap-y-20 sm:gap-y-2 py-10">
         {!isChecking ? (
           <>
             {questions.length !== 0 &&
@@ -134,6 +140,9 @@ const Trivia = ({ params }: { params: { linkData: any[] } }) => {
               })}
             <Button className="mx-10 my-5" onClick={submitAnswer}>
               Check
+            </Button>
+            <Button variant={"link"} asChild>
+              <Link href="/">Back to Home</Link>
             </Button>
           </>
         ) : (

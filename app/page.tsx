@@ -15,6 +15,7 @@ import {
   DialogTitle,
   DialogHeader,
   DialogFooter,
+  DialogClose,
 } from "../components/ui/dialog";
 import { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator ";
@@ -27,6 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select ";
 import { Input } from "@/components/ui/input ";
+import StatsModal from "@/components/StatsModal ";
 
 interface linkData {
   category: string;
@@ -70,124 +72,132 @@ export default function Home() {
     );
   };
   return (
-    <div className={`h-screen w-screen grid ${!user?.user && "items-center"}`}>
-      {user?.user && <Header />}
-      <div className="flex flex-col gap-y-9">
-        <h1 className=" font-[Arima Madurai] text-8xl text-center">
-          Trivial Trivia
-        </h1>
-        <div
-          className="text-center flex gap-x-9 j justify-center items-center
-        "
-        >
-          {!user?.user ? (
-            <>
-              <Button variant={"default"} size={"lg"} className="w-max">
-                Sign Up
-              </Button>
-              <Button
-                asChild
-                variant={"secondary"}
-                size={"lg"}
-                className="w-max"
-              >
-                <Link href="/api/auth/login">Login</Link>
-              </Button>
-            </>
-          ) : (
-            <>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="w-max" variant="secondary">
-                    Options
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Trivia Settings</DialogTitle>
-                  </DialogHeader>
-                  <Separator />
-
-                  <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
-                    Difficulties
-                  </h4>
-                  <Select
-                    onValueChange={(val) => {
-                      setLinkData((prevState) => {
-                        return { ...prevState, category: val };
-                      });
-                    }}
-                  >
-                    <SelectTrigger className=" px-5">
-                      <SelectValue placeholder="Select A Category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        {categories.map((category) => {
-                          return (
-                            <SelectItem value={category}>
-                              {(
-                                category.charAt(0).toUpperCase() +
-                                category.slice(1)
-                              ).replaceAll("_", " ")}
-                            </SelectItem>
-                          );
-                        })}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                  <Separator />
-                  <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
-                    Difficulties
-                  </h4>
-                  <ToggleGroup
-                    type="multiple"
-                    onValueChange={(val) => {
-                      setLinkData((prevState) => {
-                        return { ...prevState, difficulty: val.join(",") };
-                      });
-                    }}
-                    value={linkData.difficulty.split(",")}
-                  >
-                    <ToggleGroupItem value="easy">Easy</ToggleGroupItem>
-                    <ToggleGroupItem value="medium">Medium</ToggleGroupItem>
-                    <ToggleGroupItem value="hard">Hard</ToggleGroupItem>
-                  </ToggleGroup>
-                  <Separator />
-                  <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
-                    Number of Questions
-                  </h4>
-                  <Input
-                    value={linkData.number_questions}
-                    onChange={(val) => {
-                      setLinkData((prevState) => {
-                        return {
-                          ...prevState,
-                          number_questions: Number(val.target.value),
-                        };
-                      });
-                    }}
-                    type="number"
-                    max={50}
-                  />
-                  <DialogFooter className="flex items-center">
-                    <Button onClick={changeLink}>Done</Button>
-                    <Button variant={"destructive"}>Reset to Default</Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-              <Button asChild variant={"default"} size={"lg"} className="w-max">
-                <Link
-                  href={`/trivia/${linkData.category}/${linkData.difficulty}/${linkData.number_questions}`}
+    <div>
+      <div className={`h-screen w-screen grid `}>
+        {<Header />}
+        <div className="flex flex-col gap-y-9">
+          <h1 className="  text-8xl text-center">Trivial Trivia</h1>
+          <div
+            className="text-center flex gap-x-9 j justify-center items-center
+          "
+          >
+            {!user?.user ? (
+              <>
+                <Button variant={"default"} size={"lg"} className="w-max">
+                  Sign Up
+                </Button>
+                <Button
+                  asChild
+                  variant={"secondary"}
+                  size={"lg"}
+                  className="w-max"
                 >
-                  Start
-                </Link>
-              </Button>
-              <Button variant={"ghost"} className="w-max">
-                Stats
-              </Button>
-            </>
-          )}
+                  <Link href="/api/auth/login">Login</Link>
+                </Button>
+              </>
+            ) : (
+              <>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="w-max" variant="secondary">
+                      Options
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Trivia Settings</DialogTitle>
+                    </DialogHeader>
+                    <Separator />
+                    <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+                      Difficulties
+                    </h4>
+                    <Select
+                      onValueChange={(val) => {
+                        setLinkData((prevState) => {
+                          return { ...prevState, category: val };
+                        });
+                      }}
+                    >
+                      <SelectTrigger className=" px-5">
+                        <SelectValue placeholder="Select A Category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {categories.map((category) => {
+                            return (
+                              <SelectItem value={category}>
+                                {(
+                                  category.charAt(0).toUpperCase() +
+                                  category.slice(1)
+                                ).replaceAll("_", " ")}
+                              </SelectItem>
+                            );
+                          })}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    <Separator />
+                    <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+                      Difficulties
+                    </h4>
+                    <ToggleGroup
+                      type="multiple"
+                      onValueChange={(val) => {
+                        setLinkData((prevState) => {
+                          return { ...prevState, difficulty: val.join(",") };
+                        });
+                      }}
+                      value={linkData.difficulty.split(",")}
+                    >
+                      <ToggleGroupItem value="easy">Easy</ToggleGroupItem>
+                      <ToggleGroupItem value="medium">Medium</ToggleGroupItem>
+                      <ToggleGroupItem value="hard">Hard</ToggleGroupItem>
+                    </ToggleGroup>
+                    <Separator />
+                    <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+                      Number of Questions
+                    </h4>
+                    <Input
+                      value={linkData.number_questions}
+                      onChange={(val) => {
+                        setLinkData((prevState) => {
+                          return {
+                            ...prevState,
+                            number_questions: Number(val.target.value),
+                          };
+                        });
+                      }}
+                      type="number"
+                      max={50}
+                    />
+                    <DialogFooter className="flex items-center">
+                      <DialogClose asChild>
+                        <Button onClick={changeLink}>Done</Button>
+                      </DialogClose>
+                      <DialogClose asChild>
+                        <Button variant={"destructive"}>
+                          Reset to Default
+                        </Button>
+                      </DialogClose>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+                <Button
+                  asChild
+                  variant={"default"}
+                  size={"lg"}
+                  className="w-max"
+                >
+                  <Link
+                    href={`/trivia/${linkData.category}/${linkData.difficulty}/${linkData.number_questions}`}
+                  >
+                    Start
+                  </Link>
+                </Button>
+                <StatsModal />
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>

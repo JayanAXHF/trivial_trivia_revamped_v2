@@ -44,7 +44,7 @@ const CheckedQuestion = ({
       <h5 className="font-bold p-2">
         Q{questionNumber}. {question}
       </h5>
-      <div className="flex w-full md:flex-row flex-col items-center md:gap-x-5 md:justify-between">
+      <div className="flex w-full md:flex-row flex-col  md:items-center md:gap-x-5 md:justify-between">
         <ToggleGroup
           type="single"
           value={chosenAnswer}
