@@ -62,9 +62,9 @@ const StatsModal = () => {
             <DialogDescription></DialogDescription>
           </DialogHeader>
           <ScrollArea className=" max-h-96 grid grid-flow-row gap-y-10">
-            {stats.map((stat: any) => {
+            {stats.map((stat: any, index: number) => {
               return (
-                <Card className="my-5">
+                <Card className="my-5" key={index}>
                   <CardHeader>
                     <CardTitle className="scroll-m-20  pb-2 text-3xl font-bold tracking-tight first:mt-0 ">
                       {stat[1].score}/{stat[1].num_questions}

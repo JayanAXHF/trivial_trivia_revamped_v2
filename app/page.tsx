@@ -123,9 +123,9 @@ export default function Home() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {categories.map((category) => {
+                          {categories.map((category, index) => {
                             return (
-                              <SelectItem value={category}>
+                              <SelectItem value={category} key={index}>
                                 {(
                                   category.charAt(0).toUpperCase() +
                                   category.slice(1)

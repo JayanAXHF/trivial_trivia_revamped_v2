@@ -135,6 +135,7 @@ const Trivia = ({ params }: { params: { linkData: any[] } }) => {
                     answers={question.answers}
                     questionNumber={index + 1}
                     setSelectedOptions={setSelectedOptions}
+                    key={index}
                   />
                 );
               })}
@@ -154,6 +155,7 @@ const Trivia = ({ params }: { params: { linkData: any[] } }) => {
               questions.map((question: any, index: number) => {
                 return (
                   <QuestionCheck
+                    key={index}
                     question={question.question.text as string}
                     correct_answer={question.correctAnswer as string}
                     answers={question.answers}

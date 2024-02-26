@@ -57,7 +57,11 @@ const Question = ({
         className="w-full invisible md:visible md:flex justify-center gap-x-10"
       >
         {answers.map((answer: string, index) => {
-          return <ToggleGroupItem value={answer}>{answer}</ToggleGroupItem>;
+          return (
+            <ToggleGroupItem key={index} value={answer}>
+              {answer}
+            </ToggleGroupItem>
+          );
         })}
       </ToggleGroup>
       <Select onValueChange={onChange}>
@@ -68,7 +72,11 @@ const Question = ({
           <SelectGroup>
             {answers.map((answer: string, index) => {
               return (
-                <SelectItem value={answer} className=" overflow-hidden">
+                <SelectItem
+                  key={index}
+                  value={answer}
+                  className=" overflow-hidden"
+                >
                   {answer}
                 </SelectItem>
               );

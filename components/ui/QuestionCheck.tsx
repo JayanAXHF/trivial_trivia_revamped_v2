@@ -54,9 +54,10 @@ const CheckedQuestion = ({
         >
           {!isCorrectAnswer ? (
             <>
-              {answers.map((answer) => {
+              {answers.map((answer, index) => {
                 return (
                   <ToggleGroupItem
+                    key={index}
                     value="answer"
                     className={
                       answer === chosenAnswer
@@ -73,11 +74,12 @@ const CheckedQuestion = ({
             </>
           ) : (
             <>
-              {answers.map((answer) => {
+              {answers.map((answer, index) => {
                 return (
                   <ToggleGroupItem
                     value="answer"
                     className={answer === correct_answer ? "bg-green-500" : ""}
+                    key={index}
                   >
                     {answer}
                   </ToggleGroupItem>
