@@ -1,6 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { getDatabase } from "firebase/database";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -9,6 +11,8 @@ import { getAnalytics } from "firebase/analytics";
 const firebaseConfig = {
   apiKey: "AIzaSyCNUP0OOC5f5sRxtccg-0XzXZhYyVaw_wc",
   authDomain: "trivial-trivia-revamped.firebaseapp.com",
+  databaseURL:
+    "https://trivial-trivia-revamped-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "trivial-trivia-revamped",
   storageBucket: "trivial-trivia-revamped.appspot.com",
   messagingSenderId: "281708203113",
@@ -18,4 +22,5 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+
+export const database = getDatabase(app);

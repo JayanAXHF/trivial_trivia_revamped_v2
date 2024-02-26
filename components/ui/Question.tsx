@@ -8,6 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./select";
+import { ToggleGroup, ToggleGroupItem } from "./toggle-group";
+import { Badge } from "./badge";
 
 interface selectedOption {
   question_number?: number;
@@ -19,6 +21,7 @@ interface props {
   answers: string[];
   questionNumber: number;
   setSelectedOptions: React.Dispatch<React.SetStateAction<selectedOption[]>>;
+  isNiche?: boolean;
 }
 
 const Question = ({
@@ -27,6 +30,7 @@ const Question = ({
   answers,
   questionNumber,
   setSelectedOptions,
+  isNiche,
 }: props) => {
   const onChange = (val: string) => {
     const rightOne = (element: selectedOption) =>
@@ -42,16 +46,32 @@ const Question = ({
   return (
     <div className="p-10">
       <h5 className="font-bold p-2">
-        Q{questionNumber}. {question}
+        Q{questionNumber}. {question}{" "}
+        <Badge className={`${!isNiche && "hidden"}`}>Niche</Badge>
       </h5>
+
+      <ToggleGroup
+        onValueChange={onChange}
+        type="single"
+        variant={"outline"}
+        className="w-full invisible md:visible md:flex justify-center gap-x-10"
+      >
+        {answers.map((answer: string, index) => {
+          return <ToggleGroupItem value={answer}>{answer}</ToggleGroupItem>;
+        })}
+      </ToggleGroup>
       <Select onValueChange={onChange}>
-        <SelectTrigger className="w-full px-10">
+        <SelectTrigger className="w-full px-10 md:hidden">
           <SelectValue placeholder="Select an answer" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="md:hidden overflow-hidden">
           <SelectGroup>
             {answers.map((answer: string, index) => {
-              return <SelectItem value={answer}>{answer}</SelectItem>;
+              return (
+                <SelectItem value={answer} className=" overflow-hidden">
+                  {answer}
+                </SelectItem>
+              );
             })}
           </SelectGroup>
         </SelectContent>

@@ -49,7 +49,7 @@ const categories = [
 
 export default function Home() {
   const [linkData, setLinkData] = useState<linkData>({
-    category: "",
+    category: " ",
     number_questions: 10,
     difficulty: "easy,medium,hard",
   });
@@ -177,7 +177,11 @@ export default function Home() {
                 </DialogContent>
               </Dialog>
               <Button asChild variant={"default"} size={"lg"} className="w-max">
-                <Link href="/trivia">Start</Link>
+                <Link
+                  href={`/trivia/${linkData.category}/${linkData.difficulty}/${linkData.number_questions}`}
+                >
+                  Start
+                </Link>
               </Button>
               <Button variant={"ghost"} className="w-max">
                 Stats

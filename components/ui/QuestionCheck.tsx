@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Select, SelectTrigger, SelectValue } from "./select";
+import { ToggleGroup, ToggleGroupItem } from "./toggle-group";
 
 interface selectedOption {
   question_number?: number;
@@ -13,6 +14,7 @@ interface props {
   questionNumber: number;
   isCorrectAnswer: 0 | 1;
   chosenAnswer: string;
+  isNiche?: boolean;
 }
 
 const CheckedQuestion = ({
@@ -22,6 +24,7 @@ const CheckedQuestion = ({
   questionNumber,
   isCorrectAnswer,
   chosenAnswer,
+  isNiche,
 }: props) => {
   let splitAnswer = correct_answer.split(" ");
 
@@ -37,21 +40,64 @@ const CheckedQuestion = ({
     }
   };
   return (
-    <div className="p-10">
+    <div className="p-10 w-full">
       <h5 className="font-bold p-2">
         Q{questionNumber}. {question}
       </h5>
-      <div className="flex flex-row items-center gap-x-5 justify-between">
+      <div className="flex w-full md:flex-row flex-col items-center md:gap-x-5 md:justify-between">
+        <ToggleGroup
+          type="single"
+          value={chosenAnswer}
+          orientation="vertical"
+          variant={"outline"}
+          className="w-full invisible md:visible flex justify-center gap-y-5"
+        >
+          {!isCorrectAnswer ? (
+            <>
+              {answers.map((answer) => {
+                return (
+                  <ToggleGroupItem
+                    value="answer"
+                    className={
+                      answer === chosenAnswer
+                        ? "bg-red-500"
+                        : answer === correct_answer
+                        ? "bg-green-500"
+                        : ""
+                    }
+                  >
+                    {answer}
+                  </ToggleGroupItem>
+                );
+              })}
+            </>
+          ) : (
+            <>
+              {answers.map((answer) => {
+                return (
+                  <ToggleGroupItem
+                    value="answer"
+                    className={answer === correct_answer ? "bg-green-500" : ""}
+                  >
+                    {answer}
+                  </ToggleGroupItem>
+                );
+              })}
+            </>
+          )}
+        </ToggleGroup>
         <Select>
           <SelectTrigger
-            className={` px-10 ${
-              isCorrectAnswer ? "bg-green-500 w-full" : "bg-red-500 w-1/2"
+            className={` px-10 md:hidden ${
+              isCorrectAnswer ? "bg-green-500 w-full" : "bg-red-500 md:w-1/2"
             }`}
           >
             <SelectValue placeholder={chosenAnswer} />
           </SelectTrigger>
         </Select>
-        {!isCorrectAnswer && answerDisplay()}
+        <span className="md:invisible">
+          {!isCorrectAnswer && answerDisplay()}
+        </span>
       </div>
     </div>
   );

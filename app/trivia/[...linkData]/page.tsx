@@ -5,6 +5,11 @@ import Question from "@/components/ui/Question ";
 import { Button } from "@/components/ui/button ";
 import QuestionCheck from "@/components/ui/QuestionCheck ";
 import Link from "next/link";
+import { ref, set } from "firebase/database";
+import { database as db } from "../../../firebase";
+
+import { useUser } from "@auth0/nextjs-auth0/client";
+
 interface selectedOption {
   question_number?: number;
   option?: string;
@@ -17,22 +22,46 @@ function shuffle(array: any[]) {
   return array;
 }
 
-const Trivia = () => {
+const Trivia = ({ params }: { params: { linkData: any[] } }) => {
   const [selectedOptions, setSelectedOptions] = useState<selectedOption[]>([
     {},
   ]);
+  const user = useUser();
   const [questions, setQuestions] = useState<any[]>([]);
   const [record, setRecord] = useState<(0 | 1)[]>([]);
   const [score, setScore] = useState<number>(0);
   const [isChecking, setIsChecking] = useState<boolean>(false);
   useEffect(() => {
     fetchQuestions();
-
+    console.debug(user);
     return () => {};
   }, []);
 
+  const changeLink = (
+    category: string,
+    difficulty: string,
+    number_questions: number
+  ) => {
+    const link = `https://the-trivia-api.com/v2/questions?${
+      category !== "" && `categories=${category}`
+    }${
+      difficulty !== "" && `&difficulty=${difficulty}`
+    }${`&limit=${number_questions}`}`;
+
+    return link;
+  };
+
   const fetchQuestions = async () => {
-    const res = await fetch("https://the-trivia-api.com/v2/questions");
+    const link = params.linkData
+      ? changeLink(
+          params.linkData[0] || "",
+          params.linkData[1] || "",
+          Number(params.linkData[2]) || 0
+        )
+      : "https://the-trivia-api.com/v2/questions";
+    console.log(`JSC ~ fetchQuestions ~ link:`, link);
+    console.table(params.linkData);
+    const res = await fetch(link);
     const data = await res.json();
 
     let refData: any[] = [];
@@ -52,7 +81,9 @@ const Trivia = () => {
     setQuestions(refData);
   };
 
-  const submitAnswer = () => {
+  const submitAnswer = async () => {
+    const timestamp = Date.now();
+
     for (let index = 0; index < questions.length; index++) {
       if (selectedOptions[index].option === questions[index].correctAnswer) {
         setScore((prevState) => {
@@ -68,6 +99,16 @@ const Trivia = () => {
       }
     }
     setIsChecking(true);
+    console.debug(user.user?.sid);
+    await set(
+      ref(db, "userData/" + user.user?.sid + "/" + timestamp.toString()),
+      {
+        score: score,
+        record: record,
+        category: params.linkData[0],
+        difficulty: params.linkData[1],
+      }
+    );
   };
 
   useEffect(() => {
@@ -75,8 +116,8 @@ const Trivia = () => {
   }, [selectedOptions]);
 
   return (
-    <div className="h-screen w-screen p-36 md:p-16">
-      <ScrollArea className="w-full h-full bg-[#0a0a0a] p-20 rounded-3xl grid grid-flow-row gap-y-20">
+    <div className="h-screen w-screen lg:p-36 md:p-16 sm:p-6 ">
+      <ScrollArea className="w-full h-full bg-[#0a0a0a] lg:p-20 md:p-16 break-all p-6 rounded-3xl grid grid-flow-row gap-y-20 sm:gap-y-2 py-10">
         {!isChecking ? (
           <>
             {questions.length !== 0 &&
