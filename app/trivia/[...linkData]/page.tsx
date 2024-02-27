@@ -123,7 +123,7 @@ const Trivia = ({ params }: { params: { linkData: any[] } }) => {
 
   return (
     <div className="h-screen w-screen lg:p-36 md:p-16 sm:p-6 ">
-      <ScrollArea className="w-full h-full dark:bg-[#0a0a0a] bg-[#fafafa] lg:p-20 md:p-16 break-all p-6 rounded-3xl grid grid-flow-row gap-y-20 sm:gap-y-2 py-10">
+      <ScrollArea className="w-full h-full dark:bg-[#0a1a1a] bg-[#fafafa] lg:p-20 md:p-16 break-all p-6 rounded-3xl grid grid-flow-row gap-y-20 sm:gap-y-2 py-10">
         {!isChecking ? (
           <>
             {questions.length !== 0 &&
